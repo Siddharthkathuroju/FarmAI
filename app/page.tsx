@@ -8,7 +8,6 @@ import Navbar from "@/components/navbar"
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar />
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-green-50 to-white dark:from-green-950 dark:to-background">
           <div className="container px-4 md:px-6">
@@ -153,13 +152,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        <footer className="w-full border-t py-6">
-          <div className="container flex flex-col items-center justify-center gap-4 px-4 md:px-6 text-center">
-            <p className="text-sm text-gray-500 dark:text-gray-400">This is done by technovich</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">© 2025 FarmAI. All rights reserved.</p>
-          </div>
-        </footer>
       </main>
     </div>
   )

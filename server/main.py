@@ -54,6 +54,8 @@ names = ['Apple___Apple_scab',
   'Tomato___Tomato_mosaic_virus',
   'Tomato___Tomato_Yellow_Leaf_Curl_Virus']
 
+ml_model_url = "https://8ac59651ead9996c12.gradio.live"
+
 @app.route("/api/predict", methods=["POST"])
 def predict():
     print(request.headers)  # Print headers for debugging
@@ -79,8 +81,14 @@ def predict():
     
     predictions = model.predict(image_array)
     prediction = np.argmax(predictions[0])
-    print(prediction)
-    return jsonify({"prediction": names[prediction]})
+    
+    client = Client(ml_model_url)
+    result = client.predict(
+        input_data= json.dumps({"query":f"My crop has the {names[prediction]} disease how to cure it?"}),
+        api_name="/predict"
+    )
+    
+    return jsonify({"prediction": names[prediction], "confidence": str(predictions[0][prediction]), "suggestion":result["output"]})
 
 
 
@@ -88,7 +96,7 @@ def predict():
 def get_response():
     data = request.get_json()
     input_text = data["text"]
-    client = Client("https://fc7916e1fa48fbd040.gradio.live")
+    client = Client(ml_model_url)
     result = client.predict(
         input_data= json.dumps({"query":input_text}),
         api_name="/predict"
