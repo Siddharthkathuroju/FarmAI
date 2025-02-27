@@ -69,7 +69,7 @@ export default function ChatPage() {
 
     // AI response
     try {
-      const response = await getFarmingResponse(input);
+      const response = await getFarmingResponse(translatedInput);
       const langCode = selectedLanguage.split(" ")[1];
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
