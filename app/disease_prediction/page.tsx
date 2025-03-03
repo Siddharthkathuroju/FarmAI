@@ -14,20 +14,60 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Loader2, Upload } from "lucide-react";
+import { ChevronDown, Globe, Loader2, Upload } from "lucide-react";
 import { predictDisease } from "@/app/actions";
 import ReactMarkdown from "react-markdown";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import translate from "../chat/translate";
 
 export default function CropDiseasePredictor() {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [prediction, setPrediction] = useState<{
-    disease: string;
+    prediction: string;
     confidence: string;
     suggestion: string;
   } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const [selectedLanguage, setSelectedLanguage] = useState("English en");
+  const languages = [
+    "English en",
+    "Hindi hi",
+    "Telugu te",
+    "Tamil ta",
+    "Kannada kn",
+    "Malayalam ml",
+    "Punjabi pa",
+    "Marathi mr",
+  ];
+
+  const translateResult = async (data: {
+    prediction: string;
+    confidence: string;
+    suggestion: string;
+  }) => {
+    console.log(selectedLanguage.split(" ")[1]);
+    const translatedDisease =
+      selectedLanguage == "English en"
+        ? data.prediction
+        : await translate(data.prediction, selectedLanguage.split(" ")[1]);
+    const translatedSuggestion =
+      selectedLanguage == "English en"
+        ? data.suggestion
+        : await translate(data.suggestion, selectedLanguage.split(" ")[1]);
+
+    return {
+      prediction: translatedDisease,
+      confidence: data.confidence,
+      suggestion: translatedSuggestion,
+    };
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -94,7 +134,10 @@ export default function CropDiseasePredictor() {
       formData.append("image", file);
 
       const result = await predictDisease(formData);
-      setPrediction(result);
+      console.log(result.suggestion);
+      const translatedResult = await translateResult(result);
+      console.log(translatedResult);
+      setPrediction(translatedResult);
     } catch (error) {
       toast({
         title: "Error analyzing image",
@@ -146,6 +189,28 @@ export default function CropDiseasePredictor() {
                   "Analyze Image"
                 )}
               </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="flex min-h-4 items-center gap-2"
+                  >
+                    <Globe className="h-4 w-4" />
+                    {selectedLanguage}
+                    <ChevronDown className="h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  {languages.map((language) => (
+                    <DropdownMenuItem
+                      key={language}
+                      onClick={() => setSelectedLanguage(language)}
+                    >
+                      {language}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         ) : (
@@ -183,7 +248,7 @@ export default function CropDiseasePredictor() {
               <div>
                 <h3 className="text-lg font-medium mb-1">Identified Disease</h3>
                 <p className="text-2xl font-bold text-primary">
-                  {prediction.disease}
+                  {prediction.prediction}
                 </p>
                 <p className="text-sm text-muted-foreground">
                   Confidence: {parseFloat(prediction.confidence) * 100}%

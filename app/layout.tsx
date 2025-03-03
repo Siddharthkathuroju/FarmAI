@@ -21,28 +21,27 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
+        <nav className="sticky top-0 z-50">
+          <Navbar />
+        </nav>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <nav>
-            <Navbar />
-          </nav>
           {children}
-
-          <footer className="w-full border-t py-6">
-            <div className="container flex flex-col items-center justify-center gap-4 px-4 md:px-6 text-center">
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                This is done by technovich
-              </p>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                © 2025 FarmAI. All rights reserved.
-              </p>
-            </div>
-          </footer>
         </ThemeProvider>
+        <footer className="w-full border-t py-6">
+          <div className="container flex flex-col items-center justify-center gap-4 px-4 md:px-6 text-center">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              This is done by technovich
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              © 2025 FarmAI. All rights reserved.
+            </p>
+          </div>
+        </footer>
       </body>
     </html>
   );

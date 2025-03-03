@@ -1,17 +1,29 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Leaf, LineChart, Menu, TreesIcon as Plant, Sprout, X } from "lucide-react"
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  Leaf,
+  LineChart,
+  Menu,
+  TreesIcon as Plant,
+  Sprout,
+  X,
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { ModeToggle } from "@/components/mode-toggle"
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export default function Navbar() {
-  const pathname = usePathname()
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -40,19 +52,31 @@ export default function Navbar() {
                 <DropdownMenuItem asChild>
                   <Link href="/chat" className="flex items-center">
                     <Sprout className="mr-2 h-4 w-4" />
-                    <span>Crop Advisor</span>
+                    <span>Chat with FarmAI</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/suggestions" className="flex items-center">
+                  <Link
+                    href="/disease_prediction"
+                    className="flex items-center"
+                  >
                     <Plant className="mr-2 h-4 w-4" />
-                    <span>Pest Management</span>
+                    <span>Crop disease predictor</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href="/market-analysis" className="flex items-center">
+                  <Link href="/crop_suggestion" className="flex items-center">
+                    <Sprout className="mr-2 h-4 w-4" />
+                    <span>Crop recommender</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/market_forecasting "
+                    className="flex items-center"
+                  >
                     <LineChart className="mr-2 h-4 w-4" />
-                    <span>Market Insights</span>
+                    <span>Market Analysis</span>
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -60,7 +84,9 @@ export default function Navbar() {
             <Link
               href="/pricing"
               className={`transition-colors hover:text-foreground/80 ${
-                pathname === "/pricing" ? "text-foreground" : "text-foreground/60"
+                pathname === "/pricing"
+                  ? "text-foreground"
+                  : "text-foreground/60"
               }`}
             >
               Pricing
@@ -90,7 +116,11 @@ export default function Navbar() {
             className="md:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
-            {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            {mobileMenuOpen ? (
+              <X className="h-4 w-4" />
+            ) : (
+              <Menu className="h-4 w-4" />
+            )}
           </Button>
         </div>
       </div>
@@ -145,6 +175,5 @@ export default function Navbar() {
         </div>
       )}
     </header>
-  )
+  );
 }
-

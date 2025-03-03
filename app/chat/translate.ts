@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default async function translate(text: string, targetLang: string): Promise<string> {
-    const API_KEY = "";
+    const API_KEY = "<API_KEY>";
     const url = `https://translation.googleapis.com/language/translate/v2?key=${API_KEY}`;
 
     try {

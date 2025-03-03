@@ -2,7 +2,7 @@
 import axios from "axios";
 
 interface PredictionResponse {
-  disease: string;
+  prediction: string;
   confidence: string;
   suggestion: string;
 }

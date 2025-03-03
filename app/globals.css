@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* For Webkit-based browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* For Firefox */
+html {
+  scrollbar-width: none;
+}
+
+/* Ensuring scrolling is enabled */
+body {
+  overflow: auto;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -75,8 +90,6 @@
   }
 }
 
-
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -85,4 +98,3 @@
     @apply bg-background text-foreground;
   }
 }
-

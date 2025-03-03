@@ -9,12 +9,16 @@ from flask_cors import CORS
 from PIL import Image
 import io
 
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 
 app = Flask(__name__)
 CORS(app)  
 
 
 model = tf.keras.models.load_model("./model/crop_pred.keras")
+crop_recommendation_model = tf.keras.models.load_model("./model/crop_recommendation_model.h5")
+crop_recommendation_model.summary()
+
 names = ['Apple___Apple_scab',
   'Apple___Black_rot',
   'Apple___Cedar_apple_rust',
@@ -54,16 +58,10 @@ names = ['Apple___Apple_scab',
   'Tomato___Tomato_mosaic_virus',
   'Tomato___Tomato_Yellow_Leaf_Curl_Virus']
 
-ml_model_url = "https://8ac59651ead9996c12.gradio.live"
+ml_model_url = "https://9809973303c3fcb98c.gradio.live"
 
 @app.route("/api/predict", methods=["POST"])
 def predict():
-    print(request.headers)  # Print headers for debugging
-    print(request.files)
-    
-    print("Headers:", request.headers)
-    print("Files:", request.files)
-    print("Form Data:", request.form)
 
     if 'image' not in request.files:
         return jsonify({"error": "No file part in the request"}), 400
@@ -103,9 +101,25 @@ def get_response():
     )
     return jsonify(result)
 
-@app.route("/api/hello", methods=["GET"])
-def hello():
-    return jsonify({"message": "Hello, Flask API!"})
+
+@app.route("/api/recommend_crop", methods=["POST"]) 
+def get_recommendation():
+    data = request.get_json()
+    N = float(data["N"])
+    P = float(data["P"])
+    K = float(data["K"])
+    temperature = float(data["temperature"])
+    humidity = float(data["humidity"])
+    ph = float(data["ph"])
+    rainfall = float(data["rainfall"])
+    sc = StandardScaler()
+    scaled_input = sc.fit_transform([[N, P, K, temperature, humidity, ph, rainfall]])
+    
+    prediction = crop_recommendation_model.predict(scaled_input)
+    crop = int(np.argmax(prediction[0]))
+    crops = ['Rice', 'Maize', 'ChickPea', 'KidneyBeans', 'PigeonPeas', 'MothBeans', 'MungBean', 'Blackgram', 'Lentil', 'Pomegranate', 'Banana', 'Mango', 'Grapes', 'Watermelon', 'Muskmelon', 'Apple', 'Orange', 'Papaya', 'Coconut', 'Cotton', 'Jute', 'Coffee']
+    return jsonify({"crop": crops[crop], "confidence": str(prediction[0][crop])})
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
