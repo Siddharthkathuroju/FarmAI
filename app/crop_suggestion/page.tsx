@@ -79,7 +79,7 @@ export default function CropSuggestionPage() {
     const fetchWeatherData = async () => {
       try {
         const response = await fetch(
-          "https://api.openweathermap.org/data/2.5/weather?q=Hyderabad&appid=441e72aff200dbf5cd3c92d38eda4ee9"
+          "https://api.openweathermap.org/data/2.5/weather?q=Hyderabad&appid=<API_KEY>"
         );
         const data = await response.json();
         form.setValue("temperature", (data.main.temp - 273).toFixed(2));
