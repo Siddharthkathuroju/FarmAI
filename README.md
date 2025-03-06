@@ -1,7 +1,7 @@
 # FarmAI - AI-Based Chatbot for Farmers
 
 Introduction
-FarmAI is an AI-powered chatbot designed to assist farmers with essential agricultural insights. Built using **Next.js** for the frontend and **Flask** for the backend, FarmAI leverages the **DeepSeek-Coder** model, trained on over 100 samples, to provide intelligent recommendations and real-time updates.
+FarmAI is an AI-powered chatbot designed to assist farmers with essential agricultural insights. Since Deepseek is an opensource project we custome trained our model!.Built using Next.js for the frontend and Flask for the backend, FarmAI leverages the DeepSeek-Coder model, trained on over 100 samples, to provide intelligent recommendations and real-time updates.
 
 Features
 - Crop Suggestion System – Get recommendations on the best crops to grow based on soil type, climate, and season.
